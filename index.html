@@ -9,831 +9,708 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green:       #2D6A4F;
-      --green-dark:  #1e5040;
-      --green-light: #E8F5F0;
-      --sand:        #F5E6D3;
-      --yellow:      #FFD166;
-      --yellow-dark: #ffc93c;
-      --ink:         #1A1A2E;
-      --body-bg:     #F7F5F0;
-      --surface:     #ffffff;
-      --muted:       #6b7280;
-      --border:      #e5e7eb;
-      --radius-sm:   8px;
-      --radius-md:   12px;
-      --radius-lg:   16px;
-      --radius-xl:   20px;
+      --green:#2D6A4F; --green-dark:#1e5040; --green-light:#E8F5F0;
+      --sand:#F5E6D3; --yellow:#FFD166; --yellow-dark:#ffc93c;
+      --ink:#1A1A2E; --body-bg:#F7F5F0; --surface:#ffffff;
+      --muted:#6b7280; --border:#e5e7eb;
+      --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px;
     }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Inter',sans-serif; background:var(--body-bg); color:var(--ink); min-height:100vh; }
 
-    html { scroll-behavior: smooth; }
+    /* NAV */
+    nav { background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:200; }
+    .nav-inner { max-width:1100px; margin:0 auto; padding:0 1.5rem; height:64px; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .nav-logo { font-family:'Nunito',sans-serif; font-weight:800; font-size:20px; color:var(--green); text-decoration:none; white-space:nowrap; }
+    .nav-search { flex:1; max-width:440px; display:flex; gap:8px; }
+    .nav-search input { flex:1; border:1.5px solid var(--border); border-radius:var(--r-md); padding:9px 14px; font-size:14px; font-family:'Inter',sans-serif; color:var(--ink); background:var(--body-bg); outline:none; transition:border-color .15s; }
+    .nav-search input:focus { border-color:var(--green); }
+    .nav-search button { background:var(--green); color:white; border:none; border-radius:var(--r-md); padding:9px 18px; font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; cursor:pointer; }
+    .nav-search button:hover { background:var(--green-dark); }
+    .nav-cart { background:var(--green); color:var(--sand); border:none; border-radius:var(--r-md); padding:9px 16px; font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; cursor:pointer; white-space:nowrap; display:flex; align-items:center; gap:8px; transition:background .15s; }
+    .nav-cart:hover { background:var(--green-dark); }
+    .cart-badge { background:var(--yellow); color:var(--ink); border-radius:20px; font-size:12px; font-weight:800; padding:1px 8px; display:none; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--body-bg);
-      color: var(--ink);
-      min-height: 100vh;
-    }
+    /* HERO */
+    .hero { background:var(--green); color:var(--sand); padding:3.5rem 1.5rem 2.5rem; position:relative; overflow:hidden; }
+    .hero::after { content:'🐾'; position:absolute; right:5%; top:50%; transform:translateY(-50%); font-size:180px; opacity:.08; pointer-events:none; line-height:1; }
+    .hero-inner { max-width:1100px; margin:0 auto; }
+    .hero-eyebrow { font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:rgba(245,230,211,.65); margin-bottom:10px; }
+    .hero-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:clamp(28px,4vw,44px); line-height:1.15; margin-bottom:12px; max-width:560px; }
+    .hero-sub { font-size:15px; color:rgba(245,230,211,.75); max-width:420px; line-height:1.6; margin-bottom:1.8rem; }
+    .hero-ctas { display:flex; gap:10px; flex-wrap:wrap; }
+    .btn-primary { background:var(--yellow); color:var(--ink); border:none; border-radius:var(--r-md); padding:12px 24px; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; cursor:pointer; transition:background .15s,transform .12s; }
+    .btn-primary:hover { background:var(--yellow-dark); transform:translateY(-1px); }
+    .btn-outline { background:transparent; color:var(--sand); border:1.5px solid rgba(245,230,211,.4); border-radius:var(--r-md); padding:12px 24px; font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; cursor:pointer; transition:border-color .15s,background .15s; }
+    .btn-outline:hover { border-color:var(--sand); background:rgba(245,230,211,.1); }
 
-    /* ── NAV ── */
-    nav {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .nav-logo {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 20px;
-      color: var(--green);
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .nav-search {
-      flex: 1;
-      max-width: 440px;
-      display: flex;
-      gap: 8px;
-    }
-    .nav-search input {
-      flex: 1;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 9px 14px;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      color: var(--ink);
-      background: var(--body-bg);
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .nav-search input:focus { border-color: var(--green); }
-    .nav-search button {
-      background: var(--green);
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 9px 18px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .nav-search button:hover { background: var(--green-dark); }
-    .nav-cart {
-      background: var(--green);
-      color: var(--sand);
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 9px 16px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.15s;
-    }
-    .nav-cart:hover { background: var(--green-dark); }
-    .cart-badge {
-      background: var(--yellow);
-      color: var(--ink);
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 1px 8px;
-      display: none;
-    }
+    /* MAIN */
+    main { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
 
-    /* ── HERO ── */
-    .hero {
-      background: var(--green);
-      color: var(--sand);
-      padding: 3.5rem 1.5rem 2.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::after {
-      content: '🐾';
-      position: absolute;
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 180px;
-      opacity: 0.08;
-      pointer-events: none;
-      line-height: 1;
-    }
-    .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero-eyebrow {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(245,230,211,0.65);
-      margin-bottom: 10px;
-    }
-    .hero-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.15;
-      margin-bottom: 12px;
-      max-width: 560px;
-    }
-    .hero-sub {
-      font-size: 15px;
-      color: rgba(245,230,211,0.75);
-      max-width: 420px;
-      line-height: 1.6;
-      margin-bottom: 1.8rem;
-    }
-    .hero-ctas {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
-      background: var(--yellow);
-      color: var(--ink);
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 12px 24px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.12s;
-    }
-    .btn-primary:hover { background: var(--yellow-dark); transform: translateY(-1px); }
-    .btn-outline {
-      background: transparent;
-      color: var(--sand);
-      border: 1.5px solid rgba(245,230,211,0.4);
-      border-radius: var(--radius-md);
-      padding: 12px 24px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .btn-outline:hover { border-color: var(--sand); background: rgba(245,230,211,0.1); }
+    /* BANNERS */
+    .banners { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:2.5rem; }
+    .banner { border-radius:var(--r-lg); padding:1.2rem 1.4rem; position:relative; overflow:hidden; }
+    .banner.green  { background:var(--green-light); border:1px solid #b8ddd0; }
+    .banner.yellow { background:#FFF8E7; border:1px solid #f5dfa0; }
+    .banner.lav    { background:#EEF0FB; border:1px solid #c8ceee; }
+    .banner-eyebrow { font-size:11px; font-family:'Nunito',sans-serif; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--green); margin-bottom:3px; }
+    .banner.yellow .banner-eyebrow { color:#9a7010; }
+    .banner.lav    .banner-eyebrow { color:#4a52a8; }
+    .banner-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:var(--ink); line-height:1.3; margin-bottom:2px; }
+    .banner-sub { font-size:12px; color:var(--muted); }
+    .banner-emoji { position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:36px; opacity:.85; }
 
-    /* ── MAIN LAYOUT ── */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
+    /* SECTION TITLE */
+    .section-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:18px; color:var(--ink); margin-bottom:1rem; }
 
-    /* ── BANNERS ── */
-    .banners {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 2.5rem;
-    }
-    .banner {
-      border-radius: var(--radius-lg);
-      padding: 1.2rem 1.4rem;
-      position: relative;
-      overflow: hidden;
-      cursor: default;
-    }
-    .banner.green { background: var(--green-light); border: 1px solid #b8ddd0; }
-    .banner.yellow { background: #FFF8E7; border: 1px solid #f5dfa0; }
-    .banner.lavender { background: #EEF0FB; border: 1px solid #c8ceee; }
-    .banner-eyebrow {
-      font-size: 11px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 3px;
-    }
-    .banner.yellow .banner-eyebrow { color: #9a7010; }
-    .banner.lavender .banner-eyebrow { color: #4a52a8; }
-    .banner-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 15px;
-      color: var(--ink);
-      line-height: 1.3;
-      margin-bottom: 2px;
-    }
-    .banner-sub { font-size: 12px; color: var(--muted); }
-    .banner-emoji {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 36px;
-      opacity: 0.85;
-    }
+    /* CATEGORIES */
+    .cats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:2.5rem; }
+    .cat-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); padding:1.1rem .8rem; cursor:pointer; text-align:center; transition:transform .15s,border-color .15s,box-shadow .15s; user-select:none; }
+    .cat-card:hover { transform:translateY(-3px); border-color:#9fcfb8; box-shadow:0 4px 16px rgba(45,106,79,.1); }
+    .cat-card.active { border-color:var(--green); border-width:2px; box-shadow:0 4px 16px rgba(45,106,79,.15); }
+    .cat-icon { font-size:38px; line-height:1; display:block; margin-bottom:7px; }
+    .cat-label { font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; color:var(--ink); }
+    .cat-count { font-size:11px; color:var(--muted); margin-top:2px; }
 
-    /* ── SECTION TITLE ── */
-    .section-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 18px;
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
+    /* PRODUCTS */
+    .products-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; gap:1rem; }
+    .products-result { font-size:13px; color:var(--muted); }
+    .products { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:14px; margin-bottom:2.5rem; }
+    .product-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; transition:transform .15s,border-color .15s,box-shadow .15s; position:relative; display:flex; flex-direction:column; }
+    .product-card:hover { transform:translateY(-3px); border-color:#9fcfb8; box-shadow:0 6px 20px rgba(45,106,79,.12); }
+    .product-img { height:115px; display:flex; align-items:center; justify-content:center; font-size:52px; background:var(--body-bg); flex-shrink:0; }
+    .product-badge { position:absolute; top:10px; left:10px; background:var(--yellow); color:var(--ink); font-family:'Nunito',sans-serif; font-weight:800; font-size:10px; padding:3px 8px; border-radius:6px; }
+    .product-body { padding:11px 13px 13px; flex:1; display:flex; flex-direction:column; }
+    .product-name { font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; color:var(--ink); margin-bottom:3px; line-height:1.3; }
+    .product-sub { font-size:11px; color:var(--muted); margin-bottom:9px; flex:1; line-height:1.4; }
+    .product-footer { display:flex; align-items:center; justify-content:space-between; }
+    .product-price { font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:var(--green); }
+    .btn-add { background:var(--green); border:none; border-radius:var(--r-sm); color:white; font-size:20px; width:30px; height:30px; cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1; transition:background .12s,transform .1s; flex-shrink:0; }
+    .btn-add:hover { background:var(--green-dark); }
+    .btn-add:active { transform:scale(.9); }
 
-    /* ── CATEGORY GRID ── */
-    .cats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin-bottom: 2.5rem;
-    }
-    .cat-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 0.8rem;
-      cursor: pointer;
-      text-align: center;
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-      user-select: none;
-    }
-    .cat-card:hover {
-      transform: translateY(-3px);
-      border-color: #9fcfb8;
-      box-shadow: 0 4px 16px rgba(45,106,79,0.1);
-    }
-    .cat-card.active {
-      border-color: var(--green);
-      border-width: 2px;
-      box-shadow: 0 4px 16px rgba(45,106,79,0.15);
-    }
-    .cat-icon { font-size: 38px; line-height: 1; display: block; margin-bottom: 7px; }
-    .cat-label {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--ink);
-    }
-    .cat-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    /* EMPTY */
+    .empty { grid-column:1/-1; text-align:center; padding:3rem 1rem; }
+    .empty-icon { font-size:48px; margin-bottom:12px; }
+    .empty-msg { font-family:'Nunito',sans-serif; font-weight:700; font-size:16px; color:var(--ink); margin-bottom:4px; }
+    .empty-sub { font-size:14px; color:var(--muted); }
 
-    /* ── PRODUCT GRID ── */
-    .products-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      gap: 1rem;
-    }
-    .products-result {
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 14px;
-      margin-bottom: 2.5rem;
-    }
-    .product-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-card:hover {
-      transform: translateY(-3px);
-      border-color: #9fcfb8;
-      box-shadow: 0 6px 20px rgba(45,106,79,0.12);
-    }
-    .product-img {
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 54px;
-      background: var(--body-bg);
-      flex-shrink: 0;
-    }
-    .product-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: var(--yellow);
-      color: var(--ink);
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 6px;
-    }
-    .product-body { padding: 12px 14px 14px; flex: 1; display: flex; flex-direction: column; }
-    .product-name {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--ink);
-      margin-bottom: 3px;
-      line-height: 1.3;
-    }
-    .product-sub {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 10px;
-      flex: 1;
-    }
-    .product-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .product-price {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 16px;
-      color: var(--green);
-    }
-    .btn-add {
-      background: var(--green);
-      border: none;
-      border-radius: var(--radius-sm);
-      color: white;
-      font-size: 20px;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      transition: background 0.12s, transform 0.1s;
-    }
-    .btn-add:hover { background: var(--green-dark); }
-    .btn-add:active { transform: scale(0.92); }
+    /* CART STICKY BAR */
+    .cart-bar { position:sticky; bottom:1.5rem; background:var(--green); border-radius:var(--r-xl); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:1rem; box-shadow:0 8px 32px rgba(45,106,79,.3); }
+    .cart-bar.empty-cart { opacity:.7; }
+    .cart-left { display:flex; align-items:center; gap:10px; }
+    .cart-emoji { font-size:22px; }
+    .cart-total { font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; color:var(--sand); }
+    .cart-items-badge { background:rgba(255,255,255,.2); color:var(--sand); font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; padding:2px 10px; border-radius:20px; }
+    .btn-checkout { background:var(--yellow); border:none; border-radius:var(--r-md); padding:10px 20px; font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--ink); cursor:pointer; white-space:nowrap; transition:background .15s,transform .1s; }
+    .btn-checkout:hover { background:var(--yellow-dark); transform:translateY(-1px); }
 
-    /* ── EMPTY STATE ── */
-    .empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--muted);
-    }
-    .empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .empty-msg {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-    .empty-sub { font-size: 14px; }
+    /* ── CART DRAWER ── */
+    .drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:300; opacity:0; pointer-events:none; transition:opacity .25s; }
+    .drawer-overlay.open { opacity:1; pointer-events:auto; }
+    .drawer { position:fixed; top:0; right:0; bottom:0; width:min(440px,100vw); background:var(--surface); z-index:301; transform:translateX(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; }
+    .drawer.open { transform:translateX(0); }
+    .drawer-head { padding:1.25rem 1.5rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .drawer-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:18px; color:var(--ink); }
+    .drawer-close { background:none; border:1px solid var(--border); border-radius:var(--r-sm); width:34px; height:34px; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; color:var(--muted); transition:background .12s; }
+    .drawer-close:hover { background:var(--body-bg); }
+    .drawer-body { flex:1; overflow-y:auto; padding:1rem 1.5rem; }
+    .drawer-empty { text-align:center; padding:3rem 1rem; color:var(--muted); }
+    .drawer-empty-icon { font-size:48px; margin-bottom:12px; }
+    .drawer-empty-msg { font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; color:var(--ink); margin-bottom:4px; }
+    .cart-item { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
+    .cart-item:last-child { border-bottom:none; }
+    .cart-item-icon { width:52px; height:52px; background:var(--body-bg); border-radius:var(--r-md); display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+    .cart-item-info { flex:1; min-width:0; }
+    .cart-item-name { font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; color:var(--ink); margin-bottom:2px; }
+    .cart-item-sub { font-size:11px; color:var(--muted); margin-bottom:8px; }
+    .cart-item-controls { display:flex; align-items:center; gap:8px; }
+    .qty-btn { background:var(--body-bg); border:1px solid var(--border); border-radius:6px; width:28px; height:28px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; color:var(--ink); transition:background .1s; font-family:'Nunito',sans-serif; font-weight:700; }
+    .qty-btn:hover { background:var(--green-light); }
+    .qty-val { font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; min-width:20px; text-align:center; }
+    .cart-item-price { font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--green); white-space:nowrap; }
+    .btn-remove { background:none; border:none; cursor:pointer; color:#ef4444; font-size:16px; padding:2px 4px; line-height:1; opacity:.7; transition:opacity .12s; }
+    .btn-remove:hover { opacity:1; }
+    .drawer-foot { padding:1.25rem 1.5rem; border-top:1px solid var(--border); flex-shrink:0; }
+    .cart-summary { margin-bottom:1rem; }
+    .cart-summary-row { display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:5px; }
+    .cart-summary-row.total { font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin-top:8px; padding-top:8px; border-top:1px solid var(--border); }
+    .btn-go-checkout { width:100%; background:var(--green); color:white; border:none; border-radius:var(--r-md); padding:14px; font-family:'Nunito',sans-serif; font-weight:800; font-size:16px; cursor:pointer; transition:background .15s; }
+    .btn-go-checkout:hover { background:var(--green-dark); }
+    .btn-continue { width:100%; background:transparent; color:var(--muted); border:none; padding:10px; font-family:'Nunito',sans-serif; font-weight:600; font-size:13px; cursor:pointer; margin-top:6px; }
+    .btn-continue:hover { color:var(--ink); }
 
-    /* ── CART BAR ── */
-    .cart-bar {
-      position: sticky;
-      bottom: 1.5rem;
-      background: var(--green);
-      border-radius: var(--radius-xl);
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      box-shadow: 0 8px 32px rgba(45,106,79,0.3);
-      transition: opacity 0.2s;
-    }
-    .cart-bar.empty-cart { opacity: 0.7; }
-    .cart-left { display: flex; align-items: center; gap: 10px; }
-    .cart-emoji { font-size: 22px; }
-    .cart-total {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--sand);
-    }
-    .cart-items-badge {
-      background: rgba(255,255,255,0.2);
-      color: var(--sand);
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      padding: 2px 10px;
-      border-radius: 20px;
-    }
-    .btn-checkout {
-      background: var(--yellow);
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 10px 20px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 14px;
-      color: var(--ink);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s, transform 0.1s;
-    }
-    .btn-checkout:hover { background: var(--yellow-dark); transform: translateY(-1px); }
-    .btn-checkout:active { transform: scale(0.97); }
+    /* ── CHECKOUT MODAL ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:400; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .modal-overlay.open { opacity:1; pointer-events:auto; }
+    .modal { background:var(--surface); border-radius:var(--r-xl); width:100%; max-width:540px; max-height:90vh; overflow-y:auto; display:flex; flex-direction:column; transform:scale(.96) translateY(8px); transition:transform .2s; }
+    .modal-overlay.open .modal { transform:scale(1) translateY(0); }
 
-    /* ── TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 96px;
-      left: 50%;
-      transform: translateX(-50%) translateY(16px);
-      background: var(--ink);
-      color: white;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      padding: 10px 20px;
-      border-radius: 24px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s;
-      white-space: nowrap;
-      z-index: 200;
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .test-banner { background:#FEF3C7; border:1.5px solid #F59E0B; border-radius:var(--r-lg) var(--r-lg) 0 0; padding:12px 20px; display:flex; align-items:flex-start; gap:10px; }
+    .test-banner-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+    .test-banner-text { font-size:12px; line-height:1.5; color:#92400E; }
+    .test-banner-text strong { font-family:'Nunito',sans-serif; font-weight:800; font-size:13px; display:block; margin-bottom:2px; color:#78350F; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem;
-      margin-top: 2rem;
-    }
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 2rem;
-    }
-    .footer-col-title {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 14px;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      cursor: pointer;
-      transition: color 0.15s;
-    }
-    .footer-col ul li:hover { color: var(--green); }
-    .footer-bottom {
-      max-width: 1100px;
-      margin: 1.5rem auto 0;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .modal-body { padding:1.5rem 1.75rem; }
+    .checkout-steps { display:flex; gap:0; margin-bottom:1.75rem; }
+    .step { flex:1; text-align:center; position:relative; }
+    .step::after { content:''; position:absolute; top:14px; left:50%; right:-50%; height:2px; background:var(--border); z-index:0; }
+    .step:last-child::after { display:none; }
+    .step-dot { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); background:var(--surface); display:flex; align-items:center; justify-content:center; margin:0 auto 6px; font-size:12px; font-family:'Nunito',sans-serif; font-weight:800; color:var(--muted); position:relative; z-index:1; transition:all .2s; }
+    .step.active .step-dot { border-color:var(--green); background:var(--green); color:white; }
+    .step.done .step-dot { border-color:var(--green); background:var(--green-light); color:var(--green); }
+    .step-label { font-size:11px; color:var(--muted); font-family:'Nunito',sans-serif; font-weight:700; }
+    .step.active .step-label { color:var(--green); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .nav-search { display: none; }
-      .hero::after { display: none; }
-      .hero { padding: 2rem 1rem 1.8rem; }
-      main { padding: 1.5rem 1rem 5rem; }
-      .banners { grid-template-columns: 1fr 1fr; }
-      .products { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); }
-      .cart-bar { border-radius: var(--radius-lg); bottom: 0.75rem; }
-      footer { padding: 1.5rem 1rem; }
-    }
+    .checkout-panel { display:none; }
+    .checkout-panel.active { display:block; }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition: none !important; animation: none !important; }
+    .panel-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; color:var(--ink); margin-bottom:1.25rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+    .form-row.single { grid-template-columns:1fr; }
+    .form-row.triple { grid-template-columns:2fr 1fr 1fr; }
+    .form-group { display:flex; flex-direction:column; gap:4px; }
+    .form-label { font-size:12px; font-weight:600; color:var(--ink); }
+    .form-input { border:1.5px solid var(--border); border-radius:var(--r-md); padding:10px 12px; font-size:14px; font-family:'Inter',sans-serif; color:var(--ink); background:var(--body-bg); outline:none; transition:border-color .15s; }
+    .form-input:focus { border-color:var(--green); background:white; }
+    .form-input.error { border-color:#ef4444; }
+
+    .order-summary-mini { background:var(--body-bg); border-radius:var(--r-lg); padding:1rem; margin-bottom:1.25rem; }
+    .order-summary-title { font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; color:var(--ink); margin-bottom:10px; }
+    .order-summary-item { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; color:var(--muted); }
+    .order-summary-item span:last-child { font-weight:600; color:var(--ink); }
+    .order-summary-total { display:flex; justify-content:space-between; font-family:'Nunito',sans-serif; font-weight:800; font-size:16px; color:var(--ink); padding-top:8px; border-top:1px solid var(--border); margin-top:6px; }
+
+    .confirm-address { background:var(--green-light); border:1px solid #b8ddd0; border-radius:var(--r-md); padding:12px 14px; font-size:13px; color:var(--ink); line-height:1.6; margin-bottom:1.25rem; }
+    .confirm-address strong { font-family:'Nunito',sans-serif; font-weight:700; display:block; margin-bottom:3px; }
+
+    .modal-foot { padding:1rem 1.75rem 1.5rem; display:flex; gap:10px; border-top:1px solid var(--border); }
+    .btn-back { background:var(--body-bg); color:var(--ink); border:1px solid var(--border); border-radius:var(--r-md); padding:12px 20px; font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; cursor:pointer; transition:background .15s; }
+    .btn-back:hover { background:var(--border); }
+    .btn-next { flex:1; background:var(--green); color:white; border:none; border-radius:var(--r-md); padding:12px 20px; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; cursor:pointer; transition:background .15s; }
+    .btn-next:hover { background:var(--green-dark); }
+    .btn-pay { flex:1; background:var(--yellow); color:var(--ink); border:none; border-radius:var(--r-md); padding:12px 20px; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; cursor:pointer; transition:background .15s; }
+    .btn-pay:hover { background:var(--yellow-dark); }
+
+    /* SUCCESS */
+    .success-screen { text-align:center; padding:2rem 1rem; }
+    .success-icon { font-size:64px; margin-bottom:16px; }
+    .success-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:24px; color:var(--ink); margin-bottom:8px; }
+    .success-sub { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:24px; max-width:300px; margin-left:auto; margin-right:auto; }
+    .success-order { background:var(--body-bg); border-radius:var(--r-lg); padding:14px 18px; display:inline-block; font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; color:var(--green); margin-bottom:20px; }
+    .btn-done { background:var(--green); color:white; border:none; border-radius:var(--r-md); padding:12px 32px; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; cursor:pointer; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:96px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--ink); color:white; font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; padding:10px 20px; border-radius:24px; opacity:0; pointer-events:none; transition:opacity .2s,transform .2s; white-space:nowrap; z-index:500; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* FOOTER */
+    footer { background:var(--surface); border-top:1px solid var(--border); padding:2rem 1.5rem; margin-top:2rem; }
+    .footer-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:2rem; }
+    .footer-col-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--ink); margin-bottom:10px; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { font-size:13px; color:var(--muted); margin-bottom:6px; cursor:pointer; transition:color .15s; }
+    .footer-col ul li:hover { color:var(--green); }
+    .footer-bottom { max-width:1100px; margin:1.5rem auto 0; padding-top:1.5rem; border-top:1px solid var(--border); font-size:12px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+    @media(max-width:640px){
+      .nav-search{display:none}
+      .hero::after{display:none}
+      .hero{padding:2rem 1rem 1.8rem}
+      main{padding:1.5rem 1rem 5rem}
+      .banners{grid-template-columns:1fr 1fr}
+      .products{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+      .cart-bar{border-radius:var(--r-lg);bottom:.75rem}
+      .form-row{grid-template-columns:1fr}
+      .form-row.triple{grid-template-columns:1fr}
+      footer{padding:1.5rem 1rem}
     }
+    @media(prefers-reduced-motion:reduce){ *,*::before,*::after{transition:none!important;animation:none!important} }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-inner">
-      <a class="nav-logo" href="#">🌿 Verena Dierenartikelen</a>
-      <div class="nav-search">
-        <input type="text" id="navSearch" placeholder="Zoek voer, speelgoed, accessoires…" oninput="filterProducts()" />
-        <button onclick="filterProducts()">Zoeken</button>
-      </div>
-      <button class="nav-cart" onclick="scrollToCart()">
-        🛒 Mandje
-        <span class="cart-badge" id="navCartBadge">0</span>
-      </button>
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">🌿 Verena Dierenartikelen</a>
+    <div class="nav-search">
+      <input type="text" id="navSearch" placeholder="Zoek voer, speelgoed, accessoires…" oninput="filterProducts()" />
+      <button onclick="filterProducts()">Zoeken</button>
     </div>
-  </nav>
+    <button class="nav-cart" onclick="openDrawer()">
+      🛒 Mandje
+      <span class="cart-badge" id="navCartBadge">0</span>
+    </button>
+  </div>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">Dierenwinkel · Amsterdam</div>
-      <h1 class="hero-title">Alles voor jouw trouwe vriend</h1>
-      <p class="hero-sub">Van premium voeding tot speelgoed en accessoires — met liefde uitgekozen voor hond, kat en meer.</p>
-      <div class="hero-ctas">
-        <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Bekijk het aanbod</button>
-        <button class="btn-outline" onclick="selectCat('hond')">Populair voor honden →</button>
-      </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Dierenwinkel · Amsterdam</div>
+    <h1 class="hero-title">Alles voor jouw trouwe vriend</h1>
+    <p class="hero-sub">Van premium voeding tot speelgoed en accessoires — met liefde uitgekozen voor hond, kat en meer.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Bekijk het aanbod</button>
+      <button class="btn-outline" onclick="selectCat('hond')">Populair voor honden →</button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- MAIN -->
-  <main>
+<main>
+  <!-- BANNERS -->
+  <div class="banners">
+    <div class="banner green"><div class="banner-eyebrow">Aanbieding van de week</div><div class="banner-title">20% korting op alle voeding</div><div class="banner-sub">Geldig t/m zondag</div><div class="banner-emoji">🎁</div></div>
+    <div class="banner yellow"><div class="banner-eyebrow">Gratis verzending</div><div class="banner-title">Vanaf €39 gratis thuisbezorgd</div><div class="banner-sub">Volgende dag in huis</div><div class="banner-emoji">📦</div></div>
+    <div class="banner lav"><div class="banner-eyebrow">Loyaliteitsprogramma</div><div class="banner-title">Spaar punten bij elke aankoop</div><div class="banner-sub">Al 8.400 leden actief</div><div class="banner-emoji">⭐</div></div>
+  </div>
 
-    <!-- BANNERS -->
-    <div class="banners">
-      <div class="banner green">
-        <div class="banner-eyebrow">Aanbieding van de week</div>
-        <div class="banner-title">20% korting op alle voeding</div>
-        <div class="banner-sub">Geldig t/m zondag</div>
-        <div class="banner-emoji">🎁</div>
-      </div>
-      <div class="banner yellow">
-        <div class="banner-eyebrow">Gratis verzending</div>
-        <div class="banner-title">Vanaf €39 gratis thuisbezorgd</div>
-        <div class="banner-sub">Volgende dag in huis</div>
-        <div class="banner-emoji">📦</div>
-      </div>
-      <div class="banner lavender">
-        <div class="banner-eyebrow">Loyaliteitsprogramma</div>
-        <div class="banner-title">Spaar punten bij elke aankoop</div>
-        <div class="banner-sub">Al 8.400 leden actief</div>
-        <div class="banner-emoji">⭐</div>
-      </div>
+  <!-- CATEGORIES -->
+  <div id="shop">
+    <div class="section-title">Winkelen per dier</div>
+    <div class="cats" id="catGrid"></div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="products-header">
+    <div class="section-title" id="productsTitle">Populaire producten</div>
+    <div class="products-result" id="productsResult"></div>
+  </div>
+  <div class="products" id="productsGrid"></div>
+
+  <!-- STICKY CART BAR -->
+  <div class="cart-bar empty-cart" id="cartBar">
+    <div class="cart-left">
+      <span class="cart-emoji">🛒</span>
+      <span class="cart-total" id="cartTotal">Jouw mandje is leeg</span>
+      <span class="cart-items-badge" id="cartItemsBadge" style="display:none">0 items</span>
     </div>
+    <button class="btn-checkout" onclick="openDrawer()">Bekijk mandje →</button>
+  </div>
+</main>
 
-    <!-- CATEGORIES -->
-    <div id="shop">
-      <div class="section-title">Winkelen per dier</div>
-      <div class="cats" id="catGrid"></div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <div class="footer-col-title">🌿 Verena</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">De dierenwinkel van de buurt — persoonlijk advies en kwalitatieve producten voor elk huisdier.</p>
     </div>
+    <div class="footer-col"><div class="footer-col-title">Klantenservice</div><ul><li>Mijn bestellingen</li><li>Retourneren</li><li>Veelgestelde vragen</li><li>Contact opnemen</li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Over ons</div><ul><li>Ons verhaal</li><li>Duurzaamheid</li><li>Werken bij Verena</li><li>Pers</li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Betalen & leveren</div><ul><li>iDEAL · Creditcard</li><li>Klarna achteraf betalen</li><li>Bezorging NL & BE</li><li>Ophalen in de winkel</li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Verena Dierenartikelen. Alle rechten voorbehouden.</span>
+    <span>Amsterdam · info@verenadieren.nl</span>
+  </div>
+</footer>
 
-    <!-- PRODUCTS -->
-    <div class="products-header">
-      <div class="section-title" id="productsTitle">Populaire producten</div>
-      <div class="products-result" id="productsResult"></div>
-    </div>
-    <div class="products" id="productsGrid"></div>
+<!-- CART DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-title">🛒 Winkelmandje</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</div>
 
-    <!-- CART BAR -->
-    <div class="cart-bar empty-cart" id="cartBar">
-      <div class="cart-left">
-        <span class="cart-emoji">🛒</span>
-        <span class="cart-total" id="cartTotal">Jouw mandje is leeg</span>
-        <span class="cart-items-badge" id="cartItemsBadge" style="display:none">0 items</span>
-      </div>
-      <button class="btn-checkout" onclick="checkout()">Afrekenen →</button>
-    </div>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-col">
-        <div class="footer-col-title">🌿 Verena</div>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">De dierenwinkel van de buurt — persoonlijk advies en kwalitatieve producten voor elk huisdier.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Klantenservice</div>
-        <ul>
-          <li>Mijn bestellingen</li>
-          <li>Retourneren</li>
-          <li>Veelgestelde vragen</li>
-          <li>Contact opnemen</li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Over ons</div>
-        <ul>
-          <li>Ons verhaal</li>
-          <li>Duurzaamheid</li>
-          <li>Werken bij Verena</li>
-          <li>Pers</li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Betalen & leveren</div>
-        <ul>
-          <li>iDEAL · Creditcard</li>
-          <li>Klarna achteraf betalen</li>
-          <li>Bezorging NL & BE</li>
-          <li>Ophalen in de winkel</li>
-        </ul>
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <!-- Test banner -->
+    <div class="test-banner">
+      <div class="test-banner-icon">⚠️</div>
+      <div class="test-banner-text">
+        <strong>Dit is een DEMO webshopomgeving</strong>
+        Er worden geen echte bestellingen verwerkt. Vul gerust fictieve gegevens in om het proces te testen.
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Verena Dierenartikelen. Alle rechten voorbehouden.</span>
-      <span>Amsterdam · info@verenadieren.nl</span>
-    </div>
-  </footer>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div>
 
-  <script>
-    const CATS = [
-      { id: 'hond',      label: 'Hond',      icon: '🐕', count: 142 },
-      { id: 'kat',       label: 'Kat',        icon: '🐈', count: 98  },
-      { id: 'vogel',     label: 'Vogel',      icon: '🐦', count: 54  },
-      { id: 'konijn',    label: 'Konijn',     icon: '🐇', count: 37  },
-      { id: 'vis',       label: 'Vis',        icon: '🐟', count: 29  },
-      { id: 'knaagdier', label: 'Knaagdier',  icon: '🐹', count: 41  },
-    ];
+<script>
+// Toon de waarschuwing direct bij het bezoeken van de site
+window.addEventListener('DOMContentLoaded', () => {
+  alert("Dit is niet de echte pagina van de webshop Verenadierenartikelen.nl Als u producten wilt kopen verwijs ik u door naar https://www.verenadierenartikelen.nl/\n\nde producten die u op deze website https://icy-mud-01ca58e03.7.azurestaticapps.net/ koopt worden niet in behandeling genomen omdat dit een test is.");
+});
 
-    const PRODUCTS = [
-      { id:  1, name: 'Royal Canin Adult',      sub: 'Premium hondenbrokken 4 kg',      price: 18.95, emoji: '🥣', cat: 'hond',      badge: 'Bestseller' },
-      { id:  2, name: 'Speelbal met bel',        sub: 'Interactief kattenspeelgoed',     price:  7.50, emoji: '🎾', cat: 'kat' },
-      { id:  3, name: 'Knauwstok naturel',       sub: 'Tandverzorging voor honden',      price:  4.95, emoji: '🦴', cat: 'hond' },
-      { id:  4, name: 'Comfy Kattenmand',        sub: 'Pluche, 50 × 40 cm',             price: 29.95, emoji: '🛏️', cat: 'kat',       badge: 'Nieuw' },
-      { id:  5, name: 'Zaadballen mix',          sub: 'Vogelvoer voor tuinvogels',       price:  8.99, emoji: '🌻', cat: 'vogel' },
-      { id:  6, name: 'Aquarium filter',         sub: 'Stil & krachtig, 400 L/u',        price: 22.50, emoji: '💧', cat: 'vis' },
-      { id:  7, name: 'Timothee hooi 1 kg',      sub: 'Vers ruwvoer voor konijnen',      price:  5.95, emoji: '🌾', cat: 'konijn' },
-      { id:  8, name: 'Loopbal hamster',         sub: 'Transparant, ø 18 cm',            price:  6.50, emoji: '⚽', cat: 'knaagdier' },
-      { id:  9, name: 'Harnas & riem set',       sub: 'Maat M, volledig verstelbaar',    price: 16.95, emoji: '🎀', cat: 'hond',      badge: 'Sale' },
-      { id: 10, name: 'Kattensnoepjes',          sub: 'Zalm & kip, 60 g',               price:  3.75, emoji: '🍬', cat: 'kat' },
-      { id: 11, name: 'Vogelkooi DeLuxe',        sub: 'Groot model 60 × 40 × 80 cm',    price: 89.00, emoji: '🏠', cat: 'vogel',     badge: 'Nieuw' },
-      { id: 12, name: 'Beloningssnoep hond',     sub: 'Training treats, 200 g',          price:  5.25, emoji: '⭐', cat: 'hond' },
-      { id: 13, name: 'Krabpaal met hut',        sub: 'Sisaltouw, hoogte 75 cm',         price: 44.95, emoji: '🏔️', cat: 'kat' },
-      { id: 14, name: 'Visvoer vlokken',         sub: 'Universeel, 100 g',              price:  3.50, emoji: '🐡', cat: 'vis' },
-      { id: 15, name: 'Konijnenhok deluxe',      sub: 'Hout, 120 × 60 cm',              price: 119.00, emoji: '🏡', cat: 'konijn',   badge: 'Nieuw' },
-      { id: 16, name: 'Nestmateriaal mix',       sub: 'Zacht & veilig, 500 g',           price:  4.25, emoji: '🪹', cat: 'knaagdier' },
-    ];
+const CATS = [
+  {id:'hond',label:'Hond',icon:'🐕',count:142},
+  {id:'kat',label:'Kat',icon:'🐈',count:98},
+  {id:'vogel',label:'Vogel',icon:'🐦',count:54},
+  {id:'konijn',label:'Konijn',icon:'🐇',count:37},
+  {id:'vis',label:'Vis',icon:'🐟',count:29},
+  {id:'knaagdier',label:'Knaagdier',icon:'🐹',count:41},
+];
 
-    let activecat  = null;
-    let cartCount  = 0;
-    let cartTotal  = 0;
+const PRODUCTS = [
+  // HOND
+  {id:1,name:'Royal Canin Adult',sub:'Premium hondenbrokken 4 kg',price:18.95,emoji:'🥣',cat:'hond',badge:'Bestseller'},
+  {id:2,name:'Knauwstok naturel',sub:'Tandverzorging, groot formaat',price:4.95,emoji:'🦴',cat:'hond'},
+  {id:3,name:'Harnas & riem set',sub:'Maat M, volledig verstelbaar',price:16.95,emoji:'🎀',cat:'hond',badge:'Sale'},
+  {id:4,name:'Beloningssnoep',sub:'Training treats, 200 g',price:5.25,emoji:'⭐',cat:'hond'},
+  {id:5,name:'Puppy Voer Starter',sub:'Voor pups t/m 12 maanden, 2 kg',price:14.50,emoji:'🐶',cat:'hond'},
+  {id:6,name:'Hondenmand XL',sub:'Wasbaar, 90×65 cm',price:39.95,emoji:'🛌',cat:'hond',badge:'Nieuw'},
+  {id:7,name:'Anti-vlooienband',sub:'Waterbestendig, 8 maanden effectief',price:12.75,emoji:'🔆',cat:'hond'},
+  {id:8,name:'Outdoor Reisset',sub:'Opvouwbare bak + drinkfles',price:21.00,emoji:'🎒',cat:'hond'},
+  {id:33,name:'Pluche Hondenspeeltje',sub:'Met pieper, stevig materiaal',price:8.50,emoji:'🧸',cat:'hond'},
+  {id:34,name:'Hondenshampoo Aloë',sub:'Voor een glanzende vacht, 250ml',price:6.95,emoji:'🧴',cat:'hond'},
+  
+  // KAT
+  {id:9,name:'Speelbal met bel',sub:'Interactief kattenspeelgoed',price:7.50,emoji:'🎾',cat:'kat'},
+  {id:10,name:'Comfy Kattenmand',sub:'Pluche, 50×40 cm',price:29.95,emoji:'🛏️',cat:'kat',badge:'Nieuw'},
+  {id:11,name:'Kattensnoepjes',sub:'Zalm & kip, 60 g',price:3.75,emoji:'🍬',cat:'kat'},
+  {id:12,name:'Krabpaal met hut',sub:'Sisaltouw, hoogte 75 cm',price:44.95,emoji:'🏔️',cat:'kat'},
+  {id:13,name:'Hill\'s Science Plan',sub:'Kattenvoer sterilised, 1,5 kg',price:22.95,emoji:'🥗',cat:'kat',badge:'Bestseller'},
+  {id:14,name:'Zelfreinigende bak',sub:'Automatische kattenbak',price:74.99,emoji:'♻️',cat:'kat',badge:'Nieuw'},
+  {id:15,name:'Kat speelstok',sub:'Met veren & belletjes',price:5.50,emoji:'🪄',cat:'kat'},
+  {id:16,name:'Droogvoer kitten',sub:'Whiskas Kitten, 800 g',price:6.99,emoji:'😸',cat:'kat'},
+  {id:35,name:'Kattenbakmat',sub:'Houdt de vloer schoon en pluisvrij',price:11.25,emoji:'🪞',cat:'kat'},
+  {id:36,name:'Moutpasta voor Katten',sub:'Tegen haarballen, 100g',price:5.49,emoji:'🧪',cat:'kat'},
+  
+  // VOGEL
+  {id:17,name:'Zaadballen mix',sub:'Vogelvoer voor tuinvogels',price:8.99,emoji:'🌻',cat:'vogel'},
+  {id:18,name:'Vogelkooi DeLuxe',sub:'Groot model 60×40×80 cm',price:89.00,emoji:'🏠',cat:'vogel',badge:'Nieuw'},
+  {id:19,name:'Grit & mineralen',sub:'Spijsvertering & gezondheid',price:4.25,emoji:'💊',cat:'vogel'},
+  {id:20,name:'Speelgoed papegaai',sub:'Hangend, kleurrijke ringen',price:11.50,emoji:'🦜',cat:'vogel'},
+  {id:21,name:'Eivoer kanarie',sub:'Extra eiwitten, 200 g',price:5.75,emoji:'🥚',cat:'vogel'},
+  {id:37,name:'Schommel van hout',sub:'Voor parkieten en kanaries',price:3.95,emoji:'🪵',cat:'vogel'},
+  
+  // KONIJN
+  {id:22,name:'Timothee hooi 1 kg',sub:'Vers ruwvoer voor konijnen',price:5.95,emoji:'🌾',cat:'konijn'},
+  {id:23,name:'Konijnenhok deluxe',sub:'Hout, 120×60 cm',price:119.00,emoji:'🏡',cat:'konijn',badge:'Nieuw'},
+  {id:24,name:'Pellets konijn',sub:'Vitamine-rijk, 1 kg',price:7.50,emoji:'🟢',cat:'konijn'},
+  {id:25,name:'Looppen uitbreidbaar',sub:'Gaaspennen, 6-delig',price:34.95,emoji:'🔲',cat:'konijn'},
+  {id:38,name:'Knaagsteen groente',sub:'Met essentiële mineralen',price:2.50,emoji:'🧱',cat:'konijn'},
+  {id:39,name:'Drinkfles 500ml',sub:'Lekvrij met handige beugel',price:4.95,emoji:'🍼',cat:'konijn'},
+  
+  // VIS
+  {id:26,name:'Aquarium filter',sub:'Stil & krachtig, 400 L/u',price:22.50,emoji:'💧',cat:'vis'},
+  {id:27,name:'Visvoer vlokken',sub:'Universeel, 100 g',price:3.50,emoji:'🐡',cat:'vis'},
+  {id:28,name:'LED-aquariumlamp',sub:'Volledig spectrum, 30 cm',price:28.00,emoji:'💡',cat:'vis',badge:'Nieuw'},
+  {id:29,name:'Waterplanten set',sub:'5 levende planten, gemengd',price:14.95,emoji:'🌿',cat:'vis'},
+  {id:40,name:'Aquarium Grond',sub:'Natuurlijk grind, 2.5 kg',price:6.50,emoji:'⛰️',cat:'vis'},
+  
+  // KNAAGDIER
+  {id:30,name:'Loopbal hamster',sub:'Transparant, ø 18 cm',price:6.50,emoji:'⚽',cat:'knaagdier'},
+  {id:31,name:'Nestmateriaal mix',sub:'Zacht & veilig, 500 g',price:4.25,emoji:'🪹',cat:'knaagdier'},
+  {id:32,name:'Knaaghout naturel',sub:'Wilgenhout, 5-pack',price:5.95,emoji:'🪵',cat:'knaagdier'},
+  {id:41,name:'Hamsterkooi Huisje',sub:'Inclusif looprad, compact',price:24.95,emoji:'🏢',cat:'knaagdier'}
+];
 
-    function fmt(n) {
-      return '€\u00A0' + n.toFixed(2).replace('.', ',');
-    }
+let activecat = null;
+let cart = []; 
+let checkoutStep = 0;
+let checkoutData = {};
 
-    function renderCats() {
-      document.getElementById('catGrid').innerHTML = CATS.map(c => `
-        <div class="cat-card ${activecat === c.id ? 'active' : ''}"
-             onclick="selectCat('${c.id}')"
-             role="button" tabindex="0" aria-pressed="${activecat === c.id}"
-             onkeydown="if(event.key==='Enter'||event.key===' ')selectCat('${c.id}')">
-          <span class="cat-icon">${c.icon}</span>
-          <div class="cat-label">${c.label}</div>
-          <div class="cat-count">${c.count} producten</div>
+function fmt(n){ return '€\u00A0'+n.toFixed(2).replace('.',','); }
+function cartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
+function cartSubtotal(){ return cart.reduce((s,i)=>s+i.product.price*i.qty,0); }
+function shipping(){ return cartSubtotal()>=39?0:4.95; }
+function cartGrandTotal(){ return cartSubtotal()+shipping(); }
+
+// ── RENDER SHOP ──
+function renderCats(){
+  document.getElementById('catGrid').innerHTML = CATS.map(c=>`
+    <div class="cat-card ${activecat===c.id?'active':''}"
+         onclick="selectCat('${c.id}')" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter'||event.key===' ')selectCat('${c.id}')">
+      <span class="cat-icon">${c.icon}</span>
+      <div class="cat-label">${c.label}</div>
+      <div class="cat-count">${c.count} producten</div>
+    </div>`).join('');
+}
+
+function selectCat(id){
+  activecat = activecat===id?null:id;
+  document.getElementById('navSearch').value='';
+  renderCats(); renderProducts();
+  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+}
+
+function filterProducts(){ activecat=null; renderCats(); renderProducts(); }
+
+function renderProducts(){
+  const q = document.getElementById('navSearch').value.toLowerCase().trim();
+  let items = [...PRODUCTS];
+  if(activecat) items=items.filter(p=>p.cat===activecat);
+  if(q) items=items.filter(p=>p.name.toLowerCase().includes(q)||p.sub.toLowerCase().includes(q)||p.cat.includes(q));
+
+  const titleEl=document.getElementById('productsTitle');
+  const resultEl=document.getElementById('productsResult');
+  if(activecat){const c=CATS.find(x=>x.id===activecat);titleEl.textContent=c.icon+'\u00A0 Producten voor '+c.label;resultEl.textContent=items.length+' producten';}
+  else if(q){titleEl.textContent='Zoekresultaten voor "'+q+'"';resultEl.textContent=items.length+' gevonden';}
+  else{titleEl.textContent='Populaire producten';resultEl.textContent='';}
+
+  const grid=document.getElementById('productsGrid');
+  if(!items.length){
+    grid.innerHTML=`<div class="empty"><div class="empty-icon">😔</div><div class="empty-msg">Geen producten gevonden</div><div class="empty-sub">Probeer een andere zoekterm of categorie</div></div>`;
+    return;
+  }
+  grid.innerHTML=items.map(p=>`
+    <div class="product-card" onclick="addToCart(${p.id})">
+      ${p.badge?`<span class="product-badge">${p.badge}</span>`:''}
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-body">
+        <div class="product-name">${p.name}</div>
+        <div class="product-sub">${p.sub}</div>
+        <div class="product-footer">
+          <span class="product-price">${fmt(p.price)}</span>
+          <button class="btn-add" onclick="event.stopPropagation();addToCart(${p.id})" aria-label="${p.name} toevoegen">+</button>
         </div>
-      `).join('');
-    }
+      </div>
+    </div>`).join('');
+}
 
-    function selectCat(id) {
-      activecat = (activecat === id) ? null : id;
-      document.getElementById('navSearch').value = '';
-      renderCats();
-      renderProducts();
-      document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
-    }
+// ── CART LOGIC ──
+function addToCart(id){
+  const p=PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  const existing=cart.find(i=>i.product.id===id);
+  if(existing) existing.qty++;
+  else cart.push({product:p,qty:1});
+  updateCartUI();
+  showToast('✓ '+p.name+' toegevoegd!');
+}
 
-    function filterProducts() {
-      activecat = null;
-      renderCats();
-      renderProducts();
-    }
+function changeQty(id,delta){
+  const item=cart.find(i=>i.product.id===id);
+  if(!item) return;
+  item.qty+=delta;
+  if(item.qty<=0) cart=cart.filter(i=>i.product.id!==id);
+  updateCartUI();
+  renderDrawer();
+}
 
-    function renderProducts() {
-      const query = document.getElementById('navSearch').value.toLowerCase().trim();
-      let items = [...PRODUCTS];
+function removeItem(id){
+  cart=cart.filter(i=>i.product.id!==id);
+  updateCartUI();
+  renderDrawer();
+}
 
-      if (activecat) items = items.filter(p => p.cat === activecat);
-      if (query)     items = items.filter(p =>
-        p.name.toLowerCase().includes(query) ||
-        p.sub.toLowerCase().includes(query)  ||
-        p.cat.includes(query)
-      );
+function updateCartUI(){
+  const count=cartCount();
+  const bar=document.getElementById('cartBar');
+  const total=document.getElementById('cartTotal');
+  const badge=document.getElementById('cartItemsBadge');
+  const nav=document.getElementById('navCartBadge');
+  if(count===0){
+    bar.classList.add('empty-cart');
+    total.textContent='Jouw mandje is leeg';
+    badge.style.display='none';
+    nav.style.display='none';
+  } else {
+    bar.classList.remove('empty-cart');
+    total.textContent=fmt(cartGrandTotal());
+    badge.style.display='inline';
+    badge.textContent=count+(count===1?' item':' items');
+    nav.style.display='inline';
+    nav.textContent=count;
+  }
+}
 
-      const titleEl  = document.getElementById('productsTitle');
-      const resultEl = document.getElementById('productsResult');
+// ── DRAWER ──
+function openDrawer(){
+  renderDrawer();
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
 
-      if (activecat) {
-        const cat = CATS.find(c => c.id === activecat);
-        titleEl.textContent  = cat.icon + '\u00A0 Producten voor ' + cat.label;
-        resultEl.textContent = items.length + ' producten';
-      } else if (query) {
-        titleEl.textContent  = 'Zoekresultaten voor "' + query + '"';
-        resultEl.textContent = items.length + ' gevonden';
-      } else {
-        titleEl.textContent  = 'Populaire producten';
-        resultEl.textContent = '';
-      }
-
-      const grid = document.getElementById('productsGrid');
-
-      if (items.length === 0) {
-        grid.innerHTML = `
-          <div class="empty">
-            <div class="empty-icon">😔</div>
-            <div class="empty-msg">Geen producten gevonden</div>
-            <div class="empty-sub">Probeer een andere zoekterm of categorie</div>
-          </div>`;
-        return;
-      }
-
-      grid.innerHTML = items.map(p => `
-        <div class="product-card" onclick="addToCart(${p.id})">
-          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-          <div class="product-img">${p.emoji}</div>
-          <div class="product-body">
-            <div class="product-name">${p.name}</div>
-            <div class="product-sub">${p.sub}</div>
-            <div class="product-footer">
-              <span class="product-price">${fmt(p.price)}</span>
-              <button class="btn-add"
-                      onclick="event.stopPropagation(); addToCart(${p.id})"
-                      aria-label="${p.name} toevoegen aan mandje">+</button>
-            </div>
-          </div>
+function renderDrawer(){
+  const body=document.getElementById('drawerBody');
+  const foot=document.getElementById('drawerFoot');
+  if(!cart.length){
+    body.innerHTML=`<div class="drawer-empty"><div class="drawer-empty-icon">🛒</div><div class="drawer-empty-msg">Je mandje is leeg</div><p style="font-size:13px;color:var(--muted);">Voeg producten toe om te beginnen</p></div>`;
+    foot.innerHTML='';
+    return;
+  }
+  body.innerHTML=cart.map(i=>`
+    <div class="cart-item">
+      <div class="cart-item-icon">${i.product.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.product.name}</div>
+        <div class="cart-item-sub">${i.product.sub}</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${i.product.id},-1)">−</button>
+          <span class="qty-val">${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i.product.id},1)">+</button>
+          <button class="btn-remove" onclick="removeItem(${i.product.id})" title="Verwijderen">🗑️</button>
         </div>
-      `).join('');
+      </div>
+      <div class="cart-item-price">${fmt(i.product.price*i.qty)}</div>
+    </div>`).join('');
+
+  const sub=cartSubtotal(), ship=shipping(), total=cartGrandTotal();
+  foot.innerHTML=`
+    <div class="cart-summary">
+      <div class="cart-summary-row"><span>Subtotaal (${cartCount()} items)</span><span>${fmt(sub)}</span></div>
+      <div class="cart-summary-row"><span>Verzending</span><span>${ship===0?'<span style="color:var(--green);font-weight:700;">Gratis</span>':fmt(ship)}</span></div>
+      ${ship>0?`<div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Bestel nog ${fmt(39-sub)} meer voor gratis verzending</div>`:''}
+      <div class="cart-summary-row total"><span>Totaal</span><span>${fmt(total)}</span></div>
+    </div>
+    <button class="btn-go-checkout" onclick="startCheckout()">Doorgaan naar bestellen 🔒</button>
+    <button class="btn-continue" onclick="closeDrawer()">← Verder winkelen</button>`;
+}
+
+// ── CHECKOUT MODAL ──
+function startCheckout(){
+  closeDrawer();
+  checkoutStep=0;
+  checkoutData={};
+  renderCheckoutStep();
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function renderCheckoutStep(){
+  const body=document.getElementById('modalBody');
+  const foot=document.getElementById('modalFoot');
+  
+  if(checkoutStep===2){ renderSuccess(); return; }
+
+  const steps=[
+    {label:'Adres',num:'1'},
+    {label:'Bevestigen',num:'2'},
+  ];
+  const stepsHtml=`<div class="checkout-steps">${steps.map((s,i)=>`
+    <div class="step ${i<checkoutStep?'done':i===checkoutStep?'active':''}">
+      <div class="step-dot">${i<checkoutStep?'✓':s.num}</div>
+      <div class="step-label">${s.label}</div>
+    </div>`).join('')}</div>`;
+
+  if(checkoutStep===0){
+    body.innerHTML=stepsHtml+`
+      <div class="panel-title">📦 Bezorgadres</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Voornaam</label><input class="form-input" id="f-fname" placeholder="Anna" value="${checkoutData.fname||''}"/></div>
+        <div class="form-group"><label class="form-label">Achternaam</label><input class="form-input" id="f-lname" placeholder="de Vries" value="${checkoutData.lname||''}"/></div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group"><label class="form-label">E-mailadres</label><input class="form-input" id="f-email" type="email" placeholder="anna@voorbeeld.nl" value="${checkoutData.email||''}"/></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label class="form-label">Straat</label><input class="form-input" id="f-street" placeholder="Prinsengracht" value="${checkoutData.street||''}"/></div>
+        <div class="form-group"><label class="form-label">Huisnr.</label><input class="form-input" id="f-num" placeholder="42" value="${checkoutData.num||''}"/></div>
+        <div class="form-group"><label class="form-label">Toev.</label><input class="form-input" id="f-add" placeholder="A" value="${checkoutData.add||''}"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Postcode</label><input class="form-input" id="f-zip" placeholder="1234 AB" value="${checkoutData.zip||''}"/></div>
+        <div class="form-group"><label class="form-label">Stad</label><input class="form-input" id="f-city" placeholder="Amsterdam" value="${checkoutData.city||''}"/></div>
+      </div>`;
+    foot.innerHTML=`<button class="btn-back" onclick="closeModal()">Annuleren</button><button class="btn-next" onclick="nextStep()">Controleren →</button>`;
+  }
+  else if(checkoutStep===1){
+    const sub=cartSubtotal(), ship=shipping(), total=cartGrandTotal();
+    body.innerHTML=stepsHtml+`
+      <div class="panel-title">✅ Controleer je bestelling</div>
+      <div class="confirm-address"><strong>📦 Bezorgadres</strong>${checkoutData.fname} ${checkoutData.lname}<br>${checkoutData.street} ${checkoutData.num}${checkoutData.add?' '+checkoutData.add:''}<br>${checkoutData.zip}, ${checkoutData.city}<br><span style="color:var(--muted);font-size:12px">${checkoutData.email}</span></div>
+      <div class="order-summary-mini">
+        <div class="order-summary-title">🛒 Jouw bestelling</div>
+        ${cart.map(i=>`<div class="order-summary-item"><span>${i.product.emoji} ${i.product.name} ×${i.qty}</span><span>${fmt(i.product.price*i.qty)}</span></div>`).join('')}
+        <div class="order-summary-item"><span>Verzending</span><span>${ship===0?'Gratis':fmt(ship)}</span></div>
+        <div class="order-summary-total"><span>Totaal</span><span>${fmt(total)}</span></div>
+      </div>`;
+    foot.innerHTML=`<button class="btn-back" onclick="prevStep()">← Terug</button><button class="btn-pay" onclick="triggerPaymentAlert()">🔒 Bestelling plaatsen</button>`;
+  }
+}
+
+function nextStep(){
+  if(checkoutStep===0){
+    const fname=document.getElementById('f-fname').value.trim();
+    const lname=document.getElementById('f-lname').value.trim();
+    const email=document.getElementById('f-email').value.trim();
+    const street=document.getElementById('f-street').value.trim();
+    const num=document.getElementById('f-num').value.trim();
+    const zip=document.getElementById('f-zip').value.trim();
+    const city=document.getElementById('f-city').value.trim();
+    if(!fname||!lname||!email||!street||!num||!zip||!city){
+      showToast('⚠️ Vul alle verplichte velden in'); return;
     }
+    checkoutData={fname,lname,email,street,num,add:document.getElementById('f-add').value.trim(),zip,city};
+  }
+  checkoutStep++;
+  renderCheckoutStep();
+}
 
-    function addToCart(id) {
-      const p = PRODUCTS.find(x => x.id === id);
-      if (!p) return;
+function prevStep(){
+  checkoutStep--;
+  renderCheckoutStep();
+}
 
-      cartCount++;
-      cartTotal += p.price;
+function triggerPaymentAlert() {
+  // Toon de gevraagde alert bij het plaatsen van de bestelling
+  alert("Dit is niet de echte pagina van de webshop Verenadierenartikelen.nl Als u producten wilt kopen verwijs ik u door naar https://www.verenadierenartikelen.nl/\n\nde producten die u op deze website https://icy-mud-01ca58e03.7.azurestaticapps.net/ koopt worden niet in behandeling genomen omdat dit een test is.");
+  simulatePay();
+}
 
-      const bar   = document.getElementById('cartBar');
-      const total = document.getElementById('cartTotal');
-      const badge = document.getElementById('cartItemsBadge');
-      const nav   = document.getElementById('navCartBadge');
+function simulatePay(){
+  const foot=document.getElementById('modalFoot');
+  const btn=foot.querySelector('.btn-pay');
+  if(btn){ btn.textContent='⏳ Verwerken…'; btn.disabled=true; }
+  setTimeout(()=>{
+    checkoutStep=2;
+    renderSuccess();
+  },1200);
+}
 
-      bar.classList.remove('empty-cart');
-      total.textContent = fmt(cartTotal);
-      badge.style.display = 'inline';
-      badge.textContent   = cartCount + (cartCount === 1 ? ' item' : ' items');
-      nav.style.display   = 'inline';
-      nav.textContent     = cartCount;
+function renderSuccess(){
+  const body=document.getElementById('modalBody');
+  const foot=document.getElementById('modalFoot');
+  const orderNum='VD-'+Math.floor(10000+Math.random()*90000);
+  body.innerHTML=`
+    <div class="success-screen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Bestelling ontvangen!</div>
+      <p class="success-sub">Bedankt, ${checkoutData.fname||'beste klant'}! Dit proces is succesvol doorlopen.</p>
+      <div class="success-order">Fictief Bestelnummer: ${orderNum}</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px;background:#FEF3C7;padding:10px 14px;border-radius:var(--r-md);border:1px solid #F59E0B;">⚠️ Dit was een testomgeving — er is geen echte bestelling verwerkt.</p>
+      <button class="btn-done" onclick="finishCheckout()">Terug naar de winkel</button>
+    </div>`;
+  foot.innerHTML='';
+}
 
-      showToast('✓ ' + p.name + ' toegevoegd!');
-    }
+function finishCheckout(){
+  cart=[];
+  updateCartUI();
+  closeModal();
+  showToast('Winkelmandje geleegd 🛒');
+}
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2200);
-    }
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
 
-    function scrollToCart() {
-      document.getElementById('cartBar').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+// ── CLOSE MODAL ON OVERLAY CLICK ──
+document.getElementById('modalOverlay').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
 
-    function checkout() {
-      if (cartCount === 0) {
-        showToast('Je mandje is nog leeg 🛒');
-        return;
-      }
-      alert('Bedankt voor je bestelling! (' + cartCount + ' artikel(en) · ' + fmt(cartTotal) + ')\nDit is een demo — koppel hier jouw checkout aan.');
-    }
-
-    renderCats();
-    renderProducts();
-  </script>
+// ── INIT ──
+renderCats();
+renderProducts();
+</script>
 </body>
 </html>
